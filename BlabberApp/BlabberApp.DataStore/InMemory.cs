@@ -1,40 +1,69 @@
-﻿using System.Collections;
+﻿using BlabberApp.Domain.Entities;
+using BlabberApp.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
-using BlabberApp.Domain;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BlabberApp.DataStore
 {
-    public class InMemory : IDataStore
+    public class InMemory<T> : IRepository<T> where T : BaseEntity
     {
-        private ArrayList _items = new ArrayList();
-        public bool Create(IDatum datum){
-            int idx = this._items.Add(datum);
-            if (idx <0){
-                throw new ArgumentOutOfRangeException("OH HELL!!");
+        private ApplicationContext Context;
+        private DbSet<T> _entities; 
+
+        public InMemory(ApplicationContext context)
+        {
+            Context = context;
+            _entities = context.Set<T>();
+        }
+
+        public void Add(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
             }
-            return true;
+            _entities.Add(entity);
+            Context.SaveChanges();
         }
-
-        public IDatum Read(int idx){
-            return (IDatum)this._items[idx];
-        }
-
-        public bool Update(IDatum datum){
-            return true;
-        }
-
-        public bool Delete(int idx){
-            //int idx = specimen.getint();
-            try{
-            this._items.RemoveAt(idx);
+        public void Remove(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
             }
-            catch(ArgumentOutOfRangeException e){
-                throw e;
+            _entities.Remove(entity);
+            Context.SaveChanges();
+        }
+        public void Update(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+        }
+        public List<T> GetAll()
+        {
+            return _entities;
+        }
+        public T GetBySysId(string sysId)
+        {
+            if (sysId.Equals(""))
+            {
+                throw new ArgumentNullException("sysId");
             }
 
-            return true;
+            return _entities.SingleOrDefault(s => s.getSysId() == sysId);
         }
 
-
+        public T GetByUserId(string userId)
+        {
+            if ( userId.Equals(""))
+            {
+                throw new ArgumentNullException("userId");
+            }
+            return _entities.Find(userId);
+        }
     }
 }
