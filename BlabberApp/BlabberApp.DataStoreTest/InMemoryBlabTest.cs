@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BlabberApp.DataStore;
 using BlabberApp.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlabberApp.DataStoreTest
 {
@@ -10,7 +11,7 @@ namespace BlabberApp.DataStoreTest
         private InMemory<Blab> _harness;
         public InMemory_Blab_UnitTests()
         {
-            _harness = new InMemory<Blab>();
+            _harness = new InMemory<Blab>(new ApplicationContext(options));
         }
 
         [TestMethod]

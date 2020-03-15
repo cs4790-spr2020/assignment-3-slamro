@@ -10,7 +10,7 @@ namespace BlabberApp.DataStore
     public class InMemory<T> : IRepository<T> where T : BaseEntity
     {
         private ApplicationContext Context;
-        private DbSet<T> _entities; 
+        private DbSet<T> _entities;
 
         public InMemory(ApplicationContext context)
         {
@@ -59,7 +59,7 @@ namespace BlabberApp.DataStore
 
         public T GetByUserId(string userId)
         {
-            if ( userId.Equals(""))
+            if (userId.Equals(""))
             {
                 throw new ArgumentNullException("userId");
             }
