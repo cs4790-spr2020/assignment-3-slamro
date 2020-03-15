@@ -43,9 +43,9 @@ namespace BlabberApp.DataStore
                 throw new ArgumentNullException("entity");
             }
         }
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return _entities;
+            return _entities.AsEnumerable();
         }
         public T GetBySysId(string sysId)
         {

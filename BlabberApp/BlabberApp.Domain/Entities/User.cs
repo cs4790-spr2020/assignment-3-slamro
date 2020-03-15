@@ -5,9 +5,9 @@ namespace BlabberApp.Domain.Entities
 {
     public class User : BaseEntity
     {
-        private DateTime RegisterDTTM { get; set; }
+        public DateTime RegisterDTTM { get; set; }
 
-        public DateTime LastLogin { get; set; }
+        public DateTime LastLoginDTTM { get; set; }
 
         public string Email { get; private set; }
         public void ChangeEmail(string email)
