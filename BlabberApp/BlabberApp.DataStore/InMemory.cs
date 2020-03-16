@@ -42,6 +42,8 @@ namespace BlabberApp.DataStore
             {
                 throw new ArgumentNullException("entity");
             }
+            _entities.Update(entity);
+            Context.SaveChanges();
         }
         public IEnumerable<T> GetAll()
         {
